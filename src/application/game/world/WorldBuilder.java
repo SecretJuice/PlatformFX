@@ -2,6 +2,7 @@ package application.game.world;
 
 import application.game.GameObject;
 import application.game.GameObjectFabricator;
+import application.game.level.LevelStringHolder;
 import application.game.transform.Transform;
 import application.utils.math.Vector2d;
 import application.utils.math.Vector2i;
@@ -25,16 +26,50 @@ public class WorldBuilder {
 
         List<GameObject> worldGameObjects = new ArrayList<GameObject>();
 
+        String levelString = new LevelStringHolder().levelOne;
+
+        int tileIndex = 0;
+
         for (int i = 0; i < gridSize.y; i++){
             for (int j = 0; j < gridSize.x; j++){
 
-                GameObject gameObject = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateGrassTile(), new Vector2i(j, i));
+                char tileChar = levelString.charAt(tileIndex);
 
-                if (gameObject != null){
 
-                    worldGameObjects.add(gameObject);
 
+//                GameObject dirty = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateDirtTile(), new Vector2i(j, i));
+//                if (dirty != null){
+//                    worldGameObjects.add(dirty);
+//                }
+
+                switch (tileChar){
+                    case '0':
+                        break;
+                    case '1':
+                        GameObject dirt = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateDirtTile(), new Vector2i(j, i));
+                        if (dirt != null){
+                            worldGameObjects.add(dirt);
+                        }
+                        break;
+                    case '2':
+                        GameObject grass = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateGrassTile(), new Vector2i(j, i));
+                        if (grass != null){
+                            worldGameObjects.add(grass);
+                        }
+                        break;
+                    case '5':
+                        GameObject player = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricatePlayer(), new Vector2i(j, i));
+                        if (player != null){
+                            worldGameObjects.add(player);
+                        }
+                        break;
+                    default:
+                        System.out.println("TileIDNotFound");
                 }
+
+                tileIndex++;
+
+
 
             }
         }
