@@ -1,8 +1,7 @@
 package application.rendering;
 
-import application.game.GameBehavior;
 import application.game.GameObject;
-import application.game.World;
+import application.game.world.World;
 import application.game.rendering.SpriteRenderer;
 import application.game.transform.Transform;
 import javafx.scene.Group;

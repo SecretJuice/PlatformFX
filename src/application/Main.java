@@ -2,12 +2,14 @@ package application;
 
 import application.game.GameBehavior;
 import application.game.GameObject;
-import application.game.World;
+import application.game.world.World;
 import application.game.physics.AABB;
 import application.game.rendering.SpriteRenderer;
 import application.game.transform.Transform;
+import application.game.world.WorldBuilder;
 import application.rendering.WorldRenderer;
 import application.utils.math.Vector2d;
+import application.utils.math.Vector2i;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -24,30 +26,34 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        Vector2i gameSize = new Vector2i(1280, 704);
+
         Group root = new Group();
 
-        GameObject firstObject = new GameObject(new ArrayList<GameBehavior>());
-        firstObject.getGameBehaviors().add(new Transform(firstObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
-        firstObject.getGameBehaviors().add(new SpriteRenderer(firstObject, new Image("assets/player/dude.png", 64, 64, true, false), 1));
-        firstObject.getGameBehaviors().add(new AABB(firstObject, new Vector2d(0, 0), new Vector2d(32, 32)));
+//        GameObject firstObject = new GameObject(new ArrayList<GameBehavior>());
+//        firstObject.getGameBehaviors().add(new Transform(firstObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
+//        firstObject.getGameBehaviors().add(new SpriteRenderer(firstObject, new Image("assets/player/dude.png", 64, 64, true, false), 1));
+//        firstObject.getGameBehaviors().add(new AABB(firstObject, new Vector2d(0, 0), new Vector2d(32, 32)));
+//
+//        GameObject secondObject = new GameObject(new ArrayList<GameBehavior>());
+//
+//        secondObject.getGameBehaviors().add(new Transform(secondObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
+//        secondObject.getGameBehaviors().add(new SpriteRenderer(secondObject, new Image("assets/tiles/grass.png", 64, 64, true, false), 0));
+//        secondObject.getGameBehaviors().add(new AABB(secondObject, new Vector2d(0, 0), new Vector2d(32, 32)));
+//
+//        List<GameObject> firstWorldGameObjects = new ArrayList<GameObject>();
+//
+//        firstWorldGameObjects.add(firstObject);
+//        firstWorldGameObjects.add(secondObject);
+//
+//        World world = new World(firstWorldGameObjects);
 
-        GameObject secondObject = new GameObject(new ArrayList<GameBehavior>());
-
-        secondObject.getGameBehaviors().add(new Transform(secondObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
-        secondObject.getGameBehaviors().add(new SpriteRenderer(secondObject, new Image("assets/tiles/grass.png", 64, 64, true, false), 0));
-        secondObject.getGameBehaviors().add(new AABB(secondObject, new Vector2d(0, 0), new Vector2d(32, 32)));
-
-        List<GameObject> firstWorldGameObjects = new ArrayList<GameObject>();
-
-        firstWorldGameObjects.add(firstObject);
-        firstWorldGameObjects.add(secondObject);
-
-        World world = new World(firstWorldGameObjects);
+        WorldBuilder worldBuilder = new WorldBuilder(gameSize, 64);
 
         WorldRenderer worldRenderer = new WorldRenderer();
-        worldRenderer.RenderWorldObjects(root, world);
+        worldRenderer.RenderWorldObjects(root, worldBuilder.BuildWorld());
 
-        Scene scene = new Scene(root,1280, 720, new Color(0.212D, 0.306D, 0.341D, 1.0D));
+        Scene scene = new Scene(root,gameSize.x, gameSize.y, new Color(0.212D, 0.306D, 0.341D, 1.0D));
 
         Text text = new Text("Yeetombolis");
 

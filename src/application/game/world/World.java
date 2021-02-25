@@ -1,4 +1,6 @@
-package application.game;
+package application.game.world;
+
+import application.game.GameObject;
 
 import java.util.List;
 

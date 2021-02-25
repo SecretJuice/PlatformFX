@@ -7,7 +7,7 @@ import application.game.transform.Transform;
 import java.lang.reflect.Type;
 import java.util.List;
 
-public class GameObject {
+public class GameObject implements Cloneable{
 
     private List<GameBehavior> gameBehaviors;
 
@@ -19,6 +19,10 @@ public class GameObject {
         this.gameBehaviors = gameBehaviors;
     }
 
+    public GameObject(GameObject another){
+        this.gameBehaviors = another.getGameBehaviors();
+    }
+
     public <T> GameBehavior<T> getBehavior(Class<? extends GameBehavior> t){
         for (GameBehavior behavior : gameBehaviors){
             if (behavior.getType().equals(t)){
@@ -26,5 +30,9 @@ public class GameObject {
             }
         }
         return null;
+    }
+
+    public Object clone() throws CloneNotSupportedException{
+        return super.clone();
     }
 }
