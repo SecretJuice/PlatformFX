@@ -1,8 +1,12 @@
 package application.game.rendering;
 
+import application.game.GameBehavior;
+import application.game.GameObject;
 import javafx.scene.image.Image;
 
-public class SpriteRenderer {
+import java.lang.reflect.Type;
+
+public class SpriteRenderer extends GameBehavior {
 
     private Image sprite;
     private int sortingOrder;
@@ -15,9 +19,16 @@ public class SpriteRenderer {
         return this.sortingOrder;
     }
 
-    public SpriteRenderer(Image rendererSprite, int rendererSortingOrder){
+    public SpriteRenderer(GameObject gameObject, Image rendererSprite, int rendererSortingOrder){
+        super(gameObject, SpriteRenderer.class);
         this.sprite = rendererSprite;
         this.sortingOrder = rendererSortingOrder;
+    }
+
+    public SpriteRenderer(){
+        super(null, SpriteRenderer.class);
+        this.sprite = null;
+        this.sortingOrder = 0;
     }
 
 }

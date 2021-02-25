@@ -1,17 +1,15 @@
 package application;
 
+import application.game.GameBehavior;
 import application.game.GameObject;
 import application.game.World;
-import application.game.physics.AxisAlignedBoundingBox;
+import application.game.physics.AABB;
 import application.game.rendering.SpriteRenderer;
 import application.game.transform.Transform;
 import application.rendering.WorldRenderer;
 import application.utils.math.Vector2d;
-import com.sun.javafx.geom.Vec2d;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -28,12 +26,16 @@ public class Main extends Application {
 
         Group root = new Group();
 
-        GameObject firstObject = new GameObject(new Transform(new Vector2d(0, 0), new Vector2d(1, 1), 0D),
-                new SpriteRenderer(new Image("assets/player/dude.png"), 0),
-                new AxisAlignedBoundingBox(new Vector2d(0, 0), new Vector2d(32, 32)));
-        GameObject secondObject = new GameObject(new Transform(new Vector2d(0, 0), new Vector2d(1, 1), 0D),
-                new SpriteRenderer(new Image("assets/tiles/grass.png"), 1),
-                new AxisAlignedBoundingBox(new Vector2d(0, 0), new Vector2d(32, 32)));
+        GameObject firstObject = new GameObject(new ArrayList<GameBehavior>());
+        firstObject.getGameBehaviors().add(new Transform(firstObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
+        firstObject.getGameBehaviors().add(new SpriteRenderer(firstObject, new Image("assets/player/dude.png", 64, 64, true, false), 1));
+        firstObject.getGameBehaviors().add(new AABB(firstObject, new Vector2d(0, 0), new Vector2d(32, 32)));
+
+        GameObject secondObject = new GameObject(new ArrayList<GameBehavior>());
+
+        secondObject.getGameBehaviors().add(new Transform(secondObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
+        secondObject.getGameBehaviors().add(new SpriteRenderer(secondObject, new Image("assets/tiles/grass.png", 64, 64, true, false), 0));
+        secondObject.getGameBehaviors().add(new AABB(secondObject, new Vector2d(0, 0), new Vector2d(32, 32)));
 
         List<GameObject> firstWorldGameObjects = new ArrayList<GameObject>();
 

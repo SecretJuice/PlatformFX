@@ -1,5 +1,6 @@
 package application.rendering;
 
+import application.game.GameBehavior;
 import application.game.GameObject;
 import application.game.World;
 import application.game.rendering.SpriteRenderer;
@@ -21,18 +22,31 @@ public class WorldRenderer {
 
         for (GameObject gameObject : worldGameObjects) {
 
-            SpriteRenderer renderer = gameObject.getSpriteRenderer();
-            Transform transform = gameObject.getTransform();
+            SpriteRenderer renderer = new SpriteRenderer();
+            renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
+
+            if (renderer == null){
+                continue;
+            }
+
+            Transform transform = new Transform();
+            transform = (Transform) gameObject.getBehavior(transform.getClass());
+
+            if (transform == null){
+                continue;
+            }
 
             ImageView imageView = new ImageView(renderer.getSprite());
 
             imageView.setX(transform.getPosition().x);
             imageView.setY(transform.getPosition().y);
 
-            imageView.setScaleX(transform.getScale().x);
-            imageView.setScaleY(transform.getScale().y);
+            //imageView.setScaleX(transform.getScale().x);
+            //imageView.setScaleY(transform.getScale().y);
 
             imageView.setRotate(transform.getRotation());
+
+            imageView.smoothProperty().set(false);
 
             worldGroup.getChildren().add(imageView);
 
@@ -44,7 +58,13 @@ public class WorldRenderer {
         Collections.sort(gameObjects, new Comparator<GameObject>() {
             @Override
             public int compare(GameObject o1, GameObject o2) {
-                return o1.getSpriteRenderer().getSortingOrder() - o2.getSpriteRenderer().getSortingOrder();
+                SpriteRenderer firstRenderer = new SpriteRenderer();
+                firstRenderer = (SpriteRenderer) o1.getBehavior(firstRenderer.getClass());
+
+                SpriteRenderer secondRenderer = new SpriteRenderer();
+                secondRenderer = (SpriteRenderer) o2.getBehavior(secondRenderer.getClass());
+
+                return firstRenderer.getSortingOrder() - secondRenderer.getSortingOrder();
             }
         });
     }
