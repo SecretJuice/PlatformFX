@@ -2,14 +2,17 @@ package application;
 
 import application.game.GameBehavior;
 import application.game.GameObject;
+import application.game.input.PlayerInputHandler;
 import application.game.world.World;
 import application.game.physics.AABB;
 import application.game.rendering.SpriteRenderer;
 import application.game.transform.Transform;
 import application.game.world.WorldBuilder;
 import application.rendering.WorldRenderer;
+import application.utils.GameTime;
 import application.utils.math.Vector2d;
 import application.utils.math.Vector2i;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -62,6 +65,48 @@ public class Main extends Application {
 
         root.getChildren().add(text);
 
+        scene.setOnKeyPressed(e -> {
+            switch (e.getCode()){
+                case A:
+                    PlayerInputHandler.getInstance().isLeftKeyDown = true;
+                    break;
+                case D:
+                    PlayerInputHandler.getInstance().isRightKeyDown = true;
+                    break;
+                case W:
+                    PlayerInputHandler.getInstance().isUpKeyDown = true;
+                    break;
+                case S:
+                    PlayerInputHandler.getInstance().isDownKeyDown = true;
+                    break;
+            }
+        });
+
+        scene.setOnKeyReleased(e -> {
+            switch (e.getCode()){
+                case A:
+                    PlayerInputHandler.getInstance().isLeftKeyDown = false;
+                    break;
+                case D:
+                    PlayerInputHandler.getInstance().isRightKeyDown = false;
+                    break;
+                case W:
+                    PlayerInputHandler.getInstance().isUpKeyDown = false;
+                    break;
+                case S:
+                    PlayerInputHandler.getInstance().isDownKeyDown = false;
+                    break;
+            }
+        });
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                update();
+            }
+        };
+
+        timer.start();
 
 
         Image icon = new Image("assets/koolaidman.png");
@@ -78,5 +123,16 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         Application.launch(args);
+
+    }
+
+    private void update() {
+        //GameTime.getInstance().CalculateDeltaTime();
+        if (PlayerInputHandler.getInstance().isDownKeyDown){
+            System.out.println("Down Key is Down");
+        }
+        else{
+            System.out.println("Down Key is NOT Down");
+        }
     }
 }
