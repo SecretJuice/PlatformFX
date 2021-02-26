@@ -13,6 +13,46 @@ import java.util.List;
 
 public class WorldRenderer {
 
+    public static void RenderAllWorldObjects(Group worldGroup, World world){
+
+        List<GameObject> worldGameObjects = world.getWorldGameObjects();
+
+        SortRenderersBySortingOrder(worldGameObjects);
+
+        for (GameObject gameObject : worldGameObjects) {
+
+            SpriteRenderer renderer = new SpriteRenderer();
+            renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
+
+            if (renderer == null){
+                continue;
+            }
+
+            Transform transform = new Transform();
+            transform = (Transform) gameObject.getBehavior(transform.getClass());
+
+            if (transform == null){
+                continue;
+            }
+
+            ImageView imageView = new ImageView(renderer.getSprite());
+
+            imageView.setX(transform.getPosition().x);
+            imageView.setY(transform.getPosition().y);
+
+            //imageView.setScaleX(transform.getScale().x);
+            //imageView.setScaleY(transform.getScale().y);
+
+            imageView.setRotate(transform.getRotation());
+
+            imageView.smoothProperty().set(false);
+
+            worldGroup.getChildren().add(imageView);
+
+        }
+
+    }
+
     public static void RenderWorldObjects(Group worldGroup, World world){
 
         List<GameObject> worldGameObjects = world.getWorldGameObjects();
@@ -25,6 +65,10 @@ public class WorldRenderer {
             renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
 
             if (renderer == null){
+                continue;
+            }
+
+            if (renderer.isStatic()){
                 continue;
             }
 

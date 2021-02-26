@@ -1,16 +1,11 @@
 package application;
 
-import application.game.GameBehavior;
-import application.game.GameObject;
+import application.events.UpdateEventHandler;
 import application.game.input.PlayerInputHandler;
 import application.game.world.World;
-import application.game.physics.AABB;
-import application.game.rendering.SpriteRenderer;
-import application.game.transform.Transform;
 import application.game.world.WorldBuilder;
 import application.rendering.WorldRenderer;
 import application.utils.GameTime;
-import application.utils.math.Vector2d;
 import application.utils.math.Vector2i;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -21,10 +16,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Main extends Application {
+
+    private Group mainGroup;
+    private World gameWorld;
+   // private WorldRenderer worldRenderer = new WorldRenderer();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -53,8 +49,9 @@ public class Main extends Application {
 
         WorldBuilder worldBuilder = new WorldBuilder(gameSize, 64);
 
-        WorldRenderer worldRenderer = new WorldRenderer();
-        worldRenderer.RenderWorldObjects(root, worldBuilder.BuildWorld());
+        gameWorld = worldBuilder.BuildWorld();
+
+        WorldRenderer.RenderAllWorldObjects(root, gameWorld);
 
         Scene scene = new Scene(root,gameSize.x, gameSize.y, new Color(0.212D, 0.306D, 0.341D, 1.0D));
 
@@ -64,6 +61,8 @@ public class Main extends Application {
         text.setY(50);
 
         root.getChildren().add(text);
+
+        mainGroup = root;
 
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()){
@@ -128,11 +127,17 @@ public class Main extends Application {
 
     private void update() {
         //GameTime.getInstance().CalculateDeltaTime();
-        if (PlayerInputHandler.getInstance().isDownKeyDown){
-            System.out.println("Down Key is Down");
-        }
-        else{
-            System.out.println("Down Key is NOT Down");
-        }
+//        if (PlayerInputHandler.getInstance().isDownKeyDown){
+//            System.out.println("Down Key is Down");
+//        }
+//        else{
+//            System.out.println("Down Key is NOT Down");
+//        }
+        mainGroup.getChildren().clear();
+        GameTime.getInstance().CalculateDeltaTime();
+
+        UpdateEventHandler.getInstance().Update();
+        WorldRenderer.RenderAllWorldObjects(mainGroup, gameWorld);
+
     }
 }

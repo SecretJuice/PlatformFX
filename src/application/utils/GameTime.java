@@ -4,7 +4,12 @@ public class GameTime {
 
     private static GameTime instance = null;
 
-    private float deltaTime = 0;
+    private int deltaTime = 0;
+    private long lastTime = System.nanoTime();
+
+    public long getDeltaTime() {
+        return deltaTime;
+    }
 
     private GameTime(){
         deltaTime = 0;
@@ -19,14 +24,15 @@ public class GameTime {
     }
 
     public void CalculateDeltaTime(){
-        float last_time = System.nanoTime();
+
 
         if (true) {
-            float time = System.nanoTime();
-            float deltaTime = (float) ((time - last_time) / 1000000);
-            last_time = time;
+            long time = System.nanoTime();
+            deltaTime = (int) ((time - lastTime) / 10000000);
+            lastTime = time;
         }
-        System.out.println(deltaTime);
+
+        //System.out.println(deltaTime);
 
     }
 
