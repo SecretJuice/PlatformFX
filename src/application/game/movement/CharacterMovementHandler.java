@@ -12,7 +12,7 @@ import application.utils.math.Vector2d;
 public class CharacterMovementHandler extends GameBehavior implements UpdateListener {
 
     private Transform characterTransform;
-    private float speed = 5;
+    private float speed = 100;
 
     public CharacterMovementHandler(GameObject gameObject){
         super(gameObject, CharacterMovementHandler.class);
@@ -48,14 +48,24 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
             direction.y++;
         }
 
+        double deltaTime = GameTime.getInstance().getDeltaTime();
+
         Vector2d newPosition = new Vector2d(
-                characterTransform.getPosition().x + (direction.x * speed * GameTime.getInstance().getDeltaTime()),
-                characterTransform.getPosition().y + (direction.y * speed * GameTime.getInstance().getDeltaTime()));
+                characterTransform.getPosition().x + (direction.x * speed * deltaTime),
+                characterTransform.getPosition().y + (direction.y * speed * deltaTime));
 
-        characterTransform.setPosition(newPosition);
 
-        System.out.println("X: " + characterTransform.getPosition().x);
-        System.out.println("Y: " + characterTransform.getPosition().y);
+        if (deltaTime < 0.5d){
+            characterTransform.setPosition(newPosition);
+        }
+
+        System.out.println("X POS: " + characterTransform.getPosition().x);
+        System.out.println("Y POS: " + characterTransform.getPosition().y);
+
+        System.out.println("X VEL: " + direction.x * speed * deltaTime);
+        System.out.println("Y VEL: " + direction.y * speed * deltaTime);
+
+        System.out.println("DeltaTime: " + deltaTime);
     }
 
 

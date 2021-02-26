@@ -4,10 +4,10 @@ public class GameTime {
 
     private static GameTime instance = null;
 
-    private int deltaTime = 0;
-    private long lastTime = System.nanoTime();
+    private double deltaTime = 0;
+    private double lastTime = System.nanoTime();
 
-    public long getDeltaTime() {
+    public double getDeltaTime() {
         return deltaTime;
     }
 
@@ -27,8 +27,8 @@ public class GameTime {
 
 
         if (true) {
-            long time = System.nanoTime();
-            deltaTime = (int) ((time - lastTime) / 10000000);
+            double time = System.nanoTime();
+            deltaTime = (double) ((time - lastTime) / 1000000000);
             lastTime = time;
         }
 
