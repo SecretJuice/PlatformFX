@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private Group mainGroup;
+
     private World gameWorld;
    // private WorldRenderer worldRenderer = new WorldRenderer();
 
@@ -27,7 +28,8 @@ public class Main extends Application {
 
         Vector2i gameSize = new Vector2i(1280, 704);
 
-        Group root = new Group();
+        Group staticGroup = new Group();
+        Group nonStaticGroup = new Group();
 
 //        GameObject firstObject = new GameObject(new ArrayList<GameBehavior>());
 //        firstObject.getGameBehaviors().add(new Transform(firstObject, new Vector2d(400, 400), new Vector2d(1, 1), 0D));
@@ -51,18 +53,19 @@ public class Main extends Application {
 
         gameWorld = worldBuilder.BuildWorld();
 
-        WorldRenderer.RenderAllWorldObjects(root, gameWorld);
+        WorldRenderer.RenderStaticWorldObjects(staticGroup, gameWorld);
 
-        Scene scene = new Scene(root,gameSize.x, gameSize.y, new Color(0.212D, 0.306D, 0.341D, 1.0D));
+        Scene scene = new Scene(staticGroup,gameSize.x, gameSize.y, new Color(0.212D, 0.306D, 0.341D, 1.0D));
 
         Text text = new Text("Yeetombolis");
 
         text.setX(50);
         text.setY(50);
 
-        root.getChildren().add(text);
+        staticGroup.getChildren().add(text);
+        staticGroup.getChildren().add(nonStaticGroup);
 
-        mainGroup = root;
+        mainGroup = staticGroup;
 
         scene.setOnKeyPressed(e -> {
             switch (e.getCode()){
@@ -133,11 +136,15 @@ public class Main extends Application {
 //        else{
 //            System.out.println("Down Key is NOT Down");
 //        }
-        mainGroup.getChildren().clear();
+//        mainStaticGroup.getChildren().clear();
+//        mainNonStaticGroup.getChildren().clear();
+
+        WorldRenderer.ClearNonStaticWorldObjects(mainGroup, gameWorld);
+
         GameTime.getInstance().CalculateDeltaTime();
 
         UpdateEventHandler.getInstance().Update();
-        WorldRenderer.RenderAllWorldObjects(mainGroup, gameWorld);
+        WorldRenderer.RenderWorldObjects(mainGroup, gameWorld);
 
     }
 }

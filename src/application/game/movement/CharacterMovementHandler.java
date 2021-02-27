@@ -12,7 +12,9 @@ import application.utils.math.Vector2d;
 public class CharacterMovementHandler extends GameBehavior implements UpdateListener {
 
     private Transform characterTransform;
-    private float speed = 100;
+    private float speed = 300;
+    private float gravity = 50;
+    private Vector2d velocity = new Vector2d(0, 0);
 
     public CharacterMovementHandler(GameObject gameObject){
         super(gameObject, CharacterMovementHandler.class);
@@ -50,10 +52,22 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
         double deltaTime = GameTime.getInstance().getDeltaTime();
 
-        Vector2d newPosition = new Vector2d(
-                characterTransform.getPosition().x + (direction.x * speed * deltaTime),
-                characterTransform.getPosition().y + (direction.y * speed * deltaTime));
+        velocity.x = Math.round(direction.x * speed * deltaTime);
 
+        velocity.y += Math.round(gravity * deltaTime);
+
+        if (direction.y == -1){
+            velocity.y = -5;
+        }
+
+        if (velocity.y > 5){
+            velocity.y = 5;
+        }
+
+
+        Vector2d newPosition = new Vector2d(
+                velocity.x + characterTransform.getPosition().x,
+                velocity.y + characterTransform.getPosition().y);
 
         if (deltaTime < 0.5d){
             characterTransform.setPosition(newPosition);
@@ -62,8 +76,8 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
         System.out.println("X POS: " + characterTransform.getPosition().x);
         System.out.println("Y POS: " + characterTransform.getPosition().y);
 
-        System.out.println("X VEL: " + direction.x * speed * deltaTime);
-        System.out.println("Y VEL: " + direction.y * speed * deltaTime);
+        System.out.println("X VEL: " + velocity.x);
+        System.out.println("Y VEL: " + velocity.y);
 
         System.out.println("DeltaTime: " + deltaTime);
     }

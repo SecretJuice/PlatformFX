@@ -13,7 +13,7 @@ import java.util.List;
 
 public class WorldRenderer {
 
-    public static void RenderAllWorldObjects(Group worldGroup, World world){
+    public static void RenderStaticWorldObjects(Group worldGroup, World world){
 
         List<GameObject> worldGameObjects = world.getWorldGameObjects();
 
@@ -25,6 +25,10 @@ public class WorldRenderer {
             renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
 
             if (renderer == null){
+                continue;
+            }
+
+            if (!renderer.isStatic()){
                 continue;
             }
 
@@ -94,6 +98,42 @@ public class WorldRenderer {
             worldGroup.getChildren().add(imageView);
 
         }
+
+    }
+
+    public static void ClearNonStaticWorldObjects(Group group, World world){
+
+        List<GameObject> worldGameObjects = world.getWorldGameObjects();
+
+        SortRenderersBySortingOrder(worldGameObjects);
+
+        for (int i = 0; i < worldGameObjects.size(); i++){
+
+            GameObject gameObject = worldGameObjects.get(i);
+
+            SpriteRenderer renderer = new SpriteRenderer();
+            renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
+
+            if (renderer.isStatic()){
+                continue;
+            }
+            group.getChildren().remove(i);
+
+        }
+
+//        for (GameObject gameObject : worldGameObjects){
+//
+//            SpriteRenderer renderer = new SpriteRenderer();
+//            renderer = (SpriteRenderer) gameObject.getBehavior(renderer.getClass());
+//
+//            ImageView imageView = new ImageView(renderer.getSprite());
+//
+//            if (renderer.isStatic()){
+//                continue;
+//            }
+//
+//            group.getChildren().remove(imageView);
+//        }
 
     }
 
