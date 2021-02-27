@@ -10,4 +10,16 @@ public class Vector2i {
         this.y = y;
     }
 
+    public double CalculateMagnitude(){
+
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+
+    }
+
+    public double CalculateAngle(){
+
+        return Math.asin( this.y / CalculateMagnitude());
+
+    }
+
 }

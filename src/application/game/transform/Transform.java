@@ -36,6 +36,7 @@ public class Transform extends GameBehavior {
         this.position = position;
         this.scale = scale;
         this.rotation = rotation;
+
     }
 
     public Transform (){

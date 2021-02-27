@@ -129,21 +129,15 @@ public class Main extends Application {
     }
 
     private void update() {
-        //GameTime.getInstance().CalculateDeltaTime();
-//        if (PlayerInputHandler.getInstance().isDownKeyDown){
-//            System.out.println("Down Key is Down");
-//        }
-//        else{
-//            System.out.println("Down Key is NOT Down");
-//        }
-//        mainStaticGroup.getChildren().clear();
-//        mainNonStaticGroup.getChildren().clear();
 
-        WorldRenderer.ClearNonStaticWorldObjects(mainGroup, gameWorld);
+        //WorldRenderer.ClearNonStaticWorldObjects(mainGroup, gameWorld);
+        mainGroup.getChildren().clear();
 
         GameTime.getInstance().CalculateDeltaTime();
 
         UpdateEventHandler.getInstance().Update();
+
+        WorldRenderer.RenderStaticWorldObjects(mainGroup, gameWorld);
         WorldRenderer.RenderWorldObjects(mainGroup, gameWorld);
 
     }

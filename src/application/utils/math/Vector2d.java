@@ -9,4 +9,16 @@ public class Vector2d {
         this.x = x;
         this.y = y;
     }
+
+    public double CalculateMagnitude(){
+
+        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2));
+
+    }
+
+    public double CalculateAngle(){
+
+        return Math.atan2( this.y, this.x) * 180 / Math.PI;
+
+    }
 }
