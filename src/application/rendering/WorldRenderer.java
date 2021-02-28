@@ -88,8 +88,8 @@ public class WorldRenderer {
             imageView.setX(transform.getPosition().x);
             imageView.setY(transform.getPosition().y);
 
-            //imageView.setScaleX(transform.getScale().x);
-            //imageView.setScaleY(transform.getScale().y);
+            imageView.setScaleX(transform.getScale().x);
+            imageView.setScaleY(transform.getScale().y);
 
             imageView.setRotate(transform.getRotation());
 

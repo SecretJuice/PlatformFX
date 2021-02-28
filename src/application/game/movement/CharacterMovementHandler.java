@@ -15,8 +15,17 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
     private Transform characterTransform;
     private AABB aabb;
-    private float speed = 300;
+    private float speed = 500;
     private float gravity = 40;
+
+    private final double jumpInputBufferTime = 0.2f;
+    private double jumpInputTimer = 0;
+
+    private final double groundedBufferTime = 0.2f;
+    private double groundedTimer = 0;
+
+    private boolean jumpIsDown = false;
+
     private Vector2d velocity = new Vector2d(0, 0);
 
     public CharacterMovementHandler(GameObject gameObject){
@@ -44,6 +53,8 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
         Vector2d direction = new Vector2d(0, 0);
 
+
+
         if (PlayerInputHandler.getInstance().isRightKeyDown){
             direction.x++;
         }
@@ -51,7 +62,15 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
             direction.x--;
         }
         if (PlayerInputHandler.getInstance().isUpKeyDown){
-            direction.y--;
+
+            if (!jumpIsDown){
+                jumpIsDown = true;
+                direction.y--;
+                jumpInputTimer = jumpInputBufferTime;
+            }
+        }
+        else{
+            jumpIsDown = false;
         }
         if (PlayerInputHandler.getInstance().isDownKeyDown){
             direction.y++;
@@ -59,16 +78,29 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
         double deltaTime = GameTime.getInstance().getDeltaTime();
 
+        jumpInputTimer -= deltaTime;
+        groundedTimer -= deltaTime;
+
         velocity.x = Math.round(direction.x * speed * deltaTime);
 
         velocity.y += gravity * deltaTime;
 
-        if (direction.y == -1){
-            velocity.y = -5;
+        if (jumpInputTimer > 0 && groundedTimer > 0){
+            velocity.y = -10;
+
+            jumpInputTimer = 0f;
+            groundedTimer = 0f;
         }
 
         if (velocity.y > 5){
             velocity.y = 5;
+        }
+
+        if (direction.x == -1){
+            characterTransform.setScale(new Vector2d(-1, 1));
+        }
+        else if (direction.x == 1){
+            characterTransform.setScale(new Vector2d(1, 1));
         }
 
 
@@ -77,8 +109,6 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
                 velocity.y + characterTransform.getPosition().y);
 
         for (AABB otherAABB: BBHandler.getInstance().getAabbs()) {
-
-
 
             if (!otherAABB.equals(aabb)){
 
@@ -103,7 +133,7 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
                     System.out.println("Collsion Detected at: " + collisionDirection);
 
-                    if (collisionDirection <= 45 && collisionDirection > -45){
+                    if (collisionDirection < 45 && collisionDirection > -45){
                         newPosition.x = otherPosition.x - aabb.getBoundingBoxLengths().x;
                         velocity.x = 0;
 
@@ -115,7 +145,7 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
                         continue;
                     }
-                    else if (collisionDirection >= -135 && collisionDirection <= -45){
+                    else if (collisionDirection > -135 && collisionDirection < -45){
                         newPosition.y = otherPosition.y + otherAABB.getBoundingBoxLengths().y;
                         velocity.y = 0;
 
@@ -127,7 +157,7 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
                         continue;
                     }
-                    else if ((collisionDirection > 135 && collisionDirection <= 180) || (collisionDirection >= -180 && collisionDirection < -135)){
+                    else if ((collisionDirection > 135 && collisionDirection <= 180) || (collisionDirection > -180 && collisionDirection < -135)){
                         newPosition.x = otherPosition.x + otherAABB.getBoundingBoxLengths().x;
                         velocity.x = 0;
 
@@ -139,7 +169,7 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
                         continue;
                     }
-                    else if (collisionDirection > 45 && collisionDirection <= 135){
+                    else if (collisionDirection > 45 && collisionDirection < 135){
                         newPosition.y = otherPosition.y - aabb.getBoundingBoxLengths().y;
                         velocity.y = 0;
 
@@ -148,6 +178,8 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
                         System.out.println("X VEL: " + velocity.x);
                         System.out.println("Y VEL: " + velocity.y);
+
+                        groundedTimer = groundedBufferTime;
 
                         continue;
                     }
