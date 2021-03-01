@@ -15,13 +15,13 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
     private Transform characterTransform;
     private AABB aabb;
-    private float speed = 500;
-    private float gravity = 40;
+    private float speed = 300;
+    private float gravity = 35;
 
-    private final double jumpInputBufferTime = 0.2f;
+    private final double jumpInputBufferTime = 0.1f;
     private double jumpInputTimer = 0;
 
-    private final double groundedBufferTime = 0.2f;
+    private final double groundedBufferTime = 0.1f;
     private double groundedTimer = 0;
 
     private boolean jumpIsDown = false;
@@ -86,7 +86,7 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
         velocity.y += gravity * deltaTime;
 
         if (jumpInputTimer > 0 && groundedTimer > 0){
-            velocity.y = -10;
+            velocity.y = -8;
 
             jumpInputTimer = 0f;
             groundedTimer = 0f;
@@ -128,8 +128,8 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
                 newPosition.y + aabb.getBoundingBoxLengths().y > otherPosition.y){
 
 
-                    double collisionDirection = new Vector2d((otherPosition.x + 32) - (characterTransform.getPosition().x + 32),
-                            (otherPosition.y + 32) - (characterTransform.getPosition().y + 32)).CalculateAngle();
+                    double collisionDirection = new Vector2d((otherPosition.x + otherAABB.getOffset().x) - (characterTransform.getPosition().x + aabb.getOffset().x),
+                            (otherPosition.y + otherAABB.getOffset().y) - (characterTransform.getPosition().y + aabb.getOffset().y)).CalculateAngle();
 
                     System.out.println("Collsion Detected at: " + collisionDirection);
 

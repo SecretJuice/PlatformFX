@@ -49,7 +49,7 @@ public class Main extends Application {
 //
 //        World world = new World(firstWorldGameObjects);
 
-        WorldBuilder worldBuilder = new WorldBuilder(gameSize, 64);
+        WorldBuilder worldBuilder = new WorldBuilder(gameSize, 32);
 
         gameWorld = worldBuilder.BuildWorld();
 
