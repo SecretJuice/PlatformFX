@@ -21,12 +21,10 @@ public class WorldBuilder {
         this.tileSize = tileSize;
     }
 
-    public World BuildWorld(){
+    public World BuildWorld(String levelString){
         GameObjectFabricator gameObjectFabricator = new GameObjectFabricator();
 
         List<GameObject> worldGameObjects = new ArrayList<GameObject>();
-
-        String levelString = new LevelStringHolder().levelOne;
 
         int tileIndex = 0;
 

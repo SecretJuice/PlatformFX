@@ -13,6 +13,10 @@ public class UpdateEventHandler {
         listeners.add(listener);
     }
 
+    public List<UpdateListener> getListeners() {
+        return listeners;
+    }
+
     public void Update(){
 
         for (UpdateListener listener : listeners){

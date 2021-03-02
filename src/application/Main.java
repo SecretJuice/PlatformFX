@@ -2,6 +2,8 @@ package application;
 
 import application.events.UpdateEventHandler;
 import application.game.input.PlayerInputHandler;
+import application.game.level.LevelManager;
+import application.game.level.LevelStringHolder;
 import application.game.world.World;
 import application.game.world.WorldBuilder;
 import application.rendering.WorldRenderer;
@@ -20,13 +22,13 @@ public class Main extends Application {
 
     private Group mainGroup;
 
-    private World gameWorld;
+    private Vector2i gameSize = new Vector2i(1280, 704);
    // private WorldRenderer worldRenderer = new WorldRenderer();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        Vector2i gameSize = new Vector2i(1280, 704);
+
 
         Group staticGroup = new Group();
         Group nonStaticGroup = new Group();
@@ -49,9 +51,11 @@ public class Main extends Application {
 //
 //        World world = new World(firstWorldGameObjects);
 
-        WorldBuilder worldBuilder = new WorldBuilder(gameSize, 32);
+        LevelManager.getInstance().InitializeLevelData();
 
-        gameWorld = worldBuilder.BuildWorld();
+        LevelManager.getInstance().SetLevel(0);
+
+        World gameWorld = LevelManager.getInstance().currentWorld;
 
         WorldRenderer.RenderStaticWorldObjects(staticGroup, gameWorld);
 
@@ -128,7 +132,11 @@ public class Main extends Application {
 
     }
 
+
+
     private void update() {
+
+        World gameWorld = LevelManager.getInstance().currentWorld;
 
         //WorldRenderer.ClearNonStaticWorldObjects(mainGroup, gameWorld);
         mainGroup.getChildren().clear();

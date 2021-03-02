@@ -1,10 +1,12 @@
 package application.game.movement;
 
+import application.Main;
 import application.events.UpdateEventHandler;
 import application.events.interfaces.UpdateListener;
 import application.game.GameBehavior;
 import application.game.GameObject;
 import application.game.input.PlayerInputHandler;
+import application.game.level.LevelManager;
 import application.game.physics.AABB;
 import application.game.physics.BBHandler;
 import application.game.transform.Transform;
@@ -194,6 +196,15 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
 
         if (deltaTime < 0.5d){
             characterTransform.setPosition(newPosition);
+        }
+
+        LevelManager levelManager = LevelManager.getInstance();
+
+        if (characterTransform.getPosition().y > levelManager.gameSize.y + 10){
+
+            levelManager.SetLevel(levelManager.currentLevelIndex);
+            //System.out.println(levelManager.currentLevelIndex);
+
         }
 
 
