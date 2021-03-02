@@ -55,6 +55,18 @@ public class WorldBuilder {
                             worldGameObjects.add(grass);
                         }
                         break;
+                    case '3':
+                        GameObject spikes = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateSpikes(), new Vector2i(j, i));
+                        if (spikes != null){
+                            worldGameObjects.add(spikes);
+                        }
+                        break;
+                    case '4':
+                        GameObject star = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricateStar(), new Vector2i(j, i));
+                        if (star != null){
+                            worldGameObjects.add(star);
+                        }
+                        break;
                     case '5':
                         GameObject player = InstantiateGameObjectOnGrid(gameObjectFabricator.FabricatePlayer(), new Vector2i(j, i));
                         if (player != null){

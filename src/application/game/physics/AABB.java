@@ -10,6 +10,8 @@ public class AABB extends GameBehavior {
 
     private Vector2d offset;
     private Vector2d boundingBoxLengths;
+    private boolean isSpike;
+    private boolean isStar;
 
     private Transform transform;
 
@@ -25,10 +27,20 @@ public class AABB extends GameBehavior {
         return boundingBoxLengths;
     }
 
-    public AABB(GameObject gameObject, Vector2d offset, Vector2d boundingBoxLengths){
+    public boolean isSpike() {
+        return isSpike;
+    }
+
+    public boolean isStar() {
+        return isStar;
+    }
+
+    public AABB(GameObject gameObject, Vector2d offset, Vector2d boundingBoxLengths, boolean isSpike, boolean isStar){
         super(gameObject, AABB.class);
         this.offset = offset;
         this.boundingBoxLengths = boundingBoxLengths;
+        this.isSpike = isSpike;
+        this.isStar = isStar;
 
         Transform transform = new Transform();
         this.transform = (Transform) gameObject.getBehavior(transform.getClass());
@@ -40,5 +52,7 @@ public class AABB extends GameBehavior {
         super(null, AABB.class);
         this.offset = null;
         this.boundingBoxLengths = null;
+        this.isSpike = false;
+        this.isStar = false;
     }
 }

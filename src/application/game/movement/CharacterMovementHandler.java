@@ -129,21 +129,34 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
                 newPosition.y < otherPosition.y + otherAABB.getBoundingBoxLengths().y &&
                 newPosition.y + aabb.getBoundingBoxLengths().y > otherPosition.y){
 
+                    LevelManager levelManager = LevelManager.getInstance();
+
+                    if (otherAABB.isSpike()){
+                        levelManager.SetLevel(levelManager.currentLevelIndex);
+                        return;
+                    }
+
+                    if (otherAABB.isStar()){
+
+                        if (levelManager.currentLevelIndex < levelManager.levelDataLength - 1){
+                            levelManager.SetLevel(levelManager.currentLevelIndex + 1);
+                            System.out.println(levelManager.currentLevelIndex + 1);
+                        }
+                        else{
+                            levelManager.SetLevel(0);
+                        }
+                        return;
+
+                    }
+
 
                     double collisionDirection = new Vector2d((otherPosition.x + otherAABB.getOffset().x) - (characterTransform.getPosition().x + aabb.getOffset().x),
                             (otherPosition.y + otherAABB.getOffset().y) - (characterTransform.getPosition().y + aabb.getOffset().y)).CalculateAngle();
 
-                    System.out.println("Collsion Detected at: " + collisionDirection);
 
                     if (collisionDirection < 45 && collisionDirection > -45){
                         newPosition.x = otherPosition.x - aabb.getBoundingBoxLengths().x;
                         velocity.x = 0;
-
-                        System.out.println("X POS: " + newPosition.x);
-                        System.out.println("Y POS: " + newPosition.y);
-
-                        System.out.println("X VEL: " + velocity.x);
-                        System.out.println("Y VEL: " + velocity.y);
 
                         continue;
                     }
@@ -151,35 +164,17 @@ public class CharacterMovementHandler extends GameBehavior implements UpdateList
                         newPosition.y = otherPosition.y + otherAABB.getBoundingBoxLengths().y;
                         velocity.y = 0;
 
-                        System.out.println("X POS: " + newPosition.x);
-                        System.out.println("Y POS: " + newPosition.y);
-
-                        System.out.println("X VEL: " + velocity.x);
-                        System.out.println("Y VEL: " + velocity.y);
-
                         continue;
                     }
                     else if ((collisionDirection > 135 && collisionDirection <= 180) || (collisionDirection > -180 && collisionDirection < -135)){
                         newPosition.x = otherPosition.x + otherAABB.getBoundingBoxLengths().x;
                         velocity.x = 0;
 
-                        System.out.println("X POS: " + newPosition.x);
-                        System.out.println("Y POS: " + newPosition.y);
-
-                        System.out.println("X VEL: " + velocity.x);
-                        System.out.println("Y VEL: " + velocity.y);
-
                         continue;
                     }
                     else if (collisionDirection > 45 && collisionDirection < 135){
                         newPosition.y = otherPosition.y - aabb.getBoundingBoxLengths().y;
                         velocity.y = 0;
-
-                        System.out.println("X POS: " + newPosition.x);
-                        System.out.println("Y POS: " + newPosition.y);
-
-                        System.out.println("X VEL: " + velocity.x);
-                        System.out.println("Y VEL: " + velocity.y);
 
                         groundedTimer = groundedBufferTime;
 
